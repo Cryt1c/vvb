@@ -4,7 +4,6 @@ function [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms
     scribble_count=0;
     reference_frame=[];
     fg_scribbles=[];
-	bg_scribbles=[];
     histo_fg=[];
     histo_bg=[];
     for j = 1:numel(file_list)
@@ -30,24 +29,25 @@ function [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms
     %----------------------------------------------------------------------
     % Task a: Filter user scribbles to indicate foreground and background   
     %----------------------------------------------------------------------
-    
-	% all pixels other then the scribbles become 0
-    fg_scribbles = imabsdiff(frames_scribbles(:,:,:,1), reference_frame);    
-    bg_scribbles = imabsdiff(frames_scribbles(:,:,:,2), reference_frame);
 
-	% binary scribbles map of fore- and background, the marked pixesl become 1
-	fg_scribbles(fg_scribbles>1) = 1;
-    bg_scribbles(bg_scribbles>1) = 1;
-	
+    %three binary channels, 1 means foreground-scribble
+    fg_scribbles = uint8(reference_frame ~= frames_scribbles(:,:,:,1));
+    %three binary channels, 1 means background-scribble
+    backgroundMap = uint8(reference_frame ~= frames_scribbles(:,:,:,2));
+    
+    %mark pixels with a different value on one or more color channels
+    fg_scribbles = uint8(fg_scribbles(:,:,1) | fg_scribbles(:,:,2) | fg_scribbles(:,:,3));
+    backgroundMap = uint8(backgroundMap(:,:,1) | backgroundMap(:,:,2) | backgroundMap(:,:,3));
+    
+    %figure, imshow(fg_scribbles*255);
+    
     %----------------------------------------------------------------------
     % Task b: Generate color models for foreground and background
     %----------------------------------------------------------------------
     
-	% matrix with the color of the marked pixels
-    fg_scribbles_color = fg_scribbles .* reference_frame;
-    bg_scribbles_color = bg_scribbles .* reference_frame;
-	
-	% color histograms for the fore- and background scribbles
-    histo_fg = colHist(fg_scribbles_color(:,:,1), fg_scribbles_color(:,:,2), fg_scribbles_color(:,:,3), bins);
-    histo_bg = colHist(bg_scribbles_color(:,:,1), bg_scribbles_color(:,:,2), bg_scribbles_color(:,:,3), bins);
+    %color histogram for the foreground scribble
+    histo_fg = colHist(reference_frame(:,:,1).*fg_scribbles, reference_frame(:,:,2).*fg_scribbles, reference_frame(:,:,3).*fg_scribbles, bins);
+    %color histogram for the background scribble
+    histo_bg = colHist(reference_frame(:,:,1).*backgroundMap, reference_frame(:,:,2).*backgroundMap, reference_frame(:,:,3).*backgroundMap, bins);
+    
 end

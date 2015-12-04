@@ -1,11 +1,6 @@
-function exercise1()
+function exercise1(input_directory, output_directory, file_extension)
     % close all figures
     close all;  
-    
-    % TODO delete
-    input_directory = '../fg_frames/';
-    output_directory = '../output_fg_map/';
-    file_extension = 'png';
 
     % check optional file extension parameter
     if (~exist('file_extension')) || (isempty(file_extension))
@@ -33,13 +28,11 @@ function exercise1()
     %----------------------------------------------------------------------
     bok = false;
     % call function get_histograms 
-    % [return parameters]=get_histograms(parameters,...);
-    bins = 5;
-    [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms(input_directory, file_list, binjs);
+    bins = 10;
+    [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms(input_directory,file_list,bins);
+    Hfc = histo_fg / sum(histo_fg);
+    Hbc = histo_bg / sum(histo_bg);
     
-    % normalization of the histograms for cost volume calculation
-	Hfc = histo_fg / sum(histo_fg);
-	Hbc = histo_bg / sum(histo_bg);
     
     if (~bok)
         disp(['No scribble or no reference frame found in input directory ' input_directory '!'])
@@ -73,8 +66,8 @@ function exercise1()
             % Task c: Generate Cost-Volume 
             %--------------------------------------------------------------
             % call function segmentation 
-            % return parameter=segmentation(parameters,...);
-            foreground_Map = segmentation(frames, fg_scribbles, Hfc, Hbc, bins);
+            foreground_Map = uint8(segmentation(frames,fg_scribbles,Hfc,Hbc,bins));
+
             % store frames
             for i = 1:size(frames,4)    
                 framecount=(loop_cnt*loop_size)+i;
