@@ -35,7 +35,7 @@ function exercise1()
     % call function get_histograms 
     % [return parameters]=get_histograms(parameters,...);
     bins = 5;
-    [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms(input_directory, file_list, binjs);
+    [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms(input_directory, file_list, bins);
     
     % normalization of the histograms for cost volume calculation
 	Hfc = histo_fg / sum(histo_fg);

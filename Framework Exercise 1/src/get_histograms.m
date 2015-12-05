@@ -38,16 +38,16 @@ function [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms
 	% binary scribbles map of fore- and background, the marked pixesl become 1
 	fg_scribbles(fg_scribbles>1) = 1;
     bg_scribbles(bg_scribbles>1) = 1;
+    
+	% DAVID ohne diese zeile wird der boxfilter nicht korrekt aufgerufen, warum man sie braucht weiß ich nicht
+    fg_scribbles = uint8(fg_scribbles(:,:,1) | fg_scribbles(:,:,2) | fg_scribbles(:,:,3));
+    bg_scribbles = uint8(bg_scribbles(:,:,1) | bg_scribbles(:,:,2) | bg_scribbles(:,:,3));
 	
     %----------------------------------------------------------------------
     % Task b: Generate color models for foreground and background
     %----------------------------------------------------------------------
-    
-	% matrix with the color of the marked pixels
-    fg_scribbles_color = fg_scribbles .* reference_frame;
-    bg_scribbles_color = bg_scribbles .* reference_frame;
-	
+   
 	% color histograms for the fore- and background scribbles
-    histo_fg = colHist(fg_scribbles_color(:,:,1), fg_scribbles_color(:,:,2), fg_scribbles_color(:,:,3), bins);
-    histo_bg = colHist(bg_scribbles_color(:,:,1), bg_scribbles_color(:,:,2), bg_scribbles_color(:,:,3), bins);
+    histo_fg = colHist(reference_frame(:,:,1).*fg_scribbles, reference_frame(:,:,2).*fg_scribbles, reference_frame(:,:,3).*fg_scribbles, bins);
+    histo_bg = colHist(reference_frame(:,:,1).*bg_scribbles, reference_frame(:,:,2).*bg_scribbles, reference_frame(:,:,3).*bg_scribbles, bins);
 end
