@@ -39,10 +39,11 @@ function [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms
 	fg_scribbles(fg_scribbles>1) = 1;
     bg_scribbles(bg_scribbles>1) = 1;
     
-	% DAVID ohne diese zeile wird der boxfilter nicht korrekt aufgerufen, warum man sie braucht weiß ich nicht
+	% 3 channels get combined into 1  
     fg_scribbles = uint8(fg_scribbles(:,:,1) | fg_scribbles(:,:,2) | fg_scribbles(:,:,3));
     bg_scribbles = uint8(bg_scribbles(:,:,1) | bg_scribbles(:,:,2) | bg_scribbles(:,:,3));
 	
+    % imshow(fg_scribbles*255);
     %----------------------------------------------------------------------
     % Task b: Generate color models for foreground and background
     %----------------------------------------------------------------------

@@ -34,7 +34,7 @@ function exercise1()
     bok = false;
     % call function get_histograms 
     % [return parameters]=get_histograms(parameters,...);
-    bins = 5;
+    bins = 10;
     [bok,scribble_count, fg_scribbles, histo_fg, histo_bg] = get_histograms(input_directory, file_list, bins);
     
     % normalization of the histograms for cost volume calculation
@@ -49,7 +49,7 @@ function exercise1()
     frames = [];
     count=0;
     loop_cnt = 0;
-    loop_size= 10;
+    loop_size= 5;
 
     for j = 1:(numel(file_list))
         frame_name = file_list(j).name;
@@ -65,7 +65,7 @@ function exercise1()
         
         % cache frames
         frames(:,:,:,count) = uint8(frame(:,:,:)); 
-              
+             
 
         % every <loop_size> frames run segmentation
         if (((mod(count, loop_size)) == 0) || (j==(numel(file_list)-3)))
@@ -74,7 +74,7 @@ function exercise1()
             %--------------------------------------------------------------
             % call function segmentation 
             % return parameter=segmentation(parameters,...);
-            foreground_Map = segmentation(frames, fg_scribbles, Hfc, Hbc, bins);
+            foreground_Map = segmentation(frames(:,:,:,count-loop_size+1:count), fg_scribbles, Hfc, Hbc, bins);
             % store frames
             for i = 1:size(frames,4)    
                 framecount=(loop_cnt*loop_size)+i;
