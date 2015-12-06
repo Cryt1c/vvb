@@ -3,6 +3,9 @@ function foreground_map = segmentation(frames,FGScribbles,Hfc,Hbc,bins)
 % Task c: Generate cost-volume
 %----------------------------------------------------------------------
 
+% comparison of corresponding frequencies in foreground and background
+% histograms, not a number becomes 0 which means color is not in the 
+% fore- or background. 0 = background, 1 = foreground
 cost = Hfc ./ (Hfc + Hbc);
 cost(isnan(cost))=0;
 
@@ -10,14 +13,15 @@ foreground_map = ones(size(frames,1),size(frames,2),size(frames,4));
 f=double(bins)/256.0;
 for i = 1:size(frames,4)
     
-    %precomputing IDs
+    % precomputing IDs
     frameR = double(frames(:,:,1,i));
     frameG = double(frames(:,:,2,i));
     frameB = double(frames(:,:,3,i));
-    histIDs=floor(frameR*f) + floor(frameG*f)*bins + floor(frameB*f)*bins*bins+1;
+    IDs=floor(frameR*f) + floor(frameG*f)*bins + floor(frameB*f)*bins*bins+1;
     
-    %match every pixel of each frame to foreground(1) or background(0) dependig on the costs.
-    foreground_map(:,:,i) = arrayfun(@(id) (cost(id) ), histIDs);
+    % with anonymus function for every pixel in the IDs-array the costs are
+    % checked and stored in the foreground_map
+    foreground_map(:,:,i) = arrayfun(@(id) (cost(id) ), IDs);
 end
 
 %----------------------------------------------------------------------
@@ -47,7 +51,5 @@ end
 
 % perform filter second time for smooth transitions, multiply with 255 for
 % 8-bit color space
-foreground_map = guidedfilter_vid_color(frames, foreground_map, r, rt, eps);
-foreground_map = foreground_map*255;
-foreground_map = uint8(foreground_map);
+foreground_map = uint8(guidedfilter_vid_color(frames, foreground_map, r, rt, eps)*255);
 end
