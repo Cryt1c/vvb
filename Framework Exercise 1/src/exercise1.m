@@ -1,12 +1,7 @@
-function exercise1()
+function exercise1(input_directory, output_directory, file_extension)
     % close all figures
     close all;  
     
-    % TODO delete
-    input_directory = '../fg_frames/';
-    output_directory = '../output_fg_map/';
-    file_extension = 'png';
-
     % check optional file extension parameter
     if (~exist('file_extension')) || (isempty(file_extension))
       file_extension='png'; 
@@ -49,7 +44,7 @@ function exercise1()
     frames = [];
     count=0;
     loop_cnt = 0;
-    loop_size= 5;
+    loop_size= 10;
 
     for j = 1:(numel(file_list))
         frame_name = file_list(j).name;
@@ -74,7 +69,7 @@ function exercise1()
             %--------------------------------------------------------------
             % call function segmentation 
             % return parameter=segmentation(parameters,...);
-            foreground_Map = segmentation(frames(:,:,:,count-loop_size+1:count), fg_scribbles, Hfc, Hbc, bins);
+            foreground_Map = segmentation(frames, fg_scribbles, Hfc, Hbc, bins);
             % store frames
             for i = 1:size(frames,4)    
                 framecount=(loop_cnt*loop_size)+i;
