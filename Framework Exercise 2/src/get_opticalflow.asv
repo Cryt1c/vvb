@@ -24,23 +24,14 @@ for i=1:iterations
     uAvg = getAvg(u);
     vAvg = getAvg(v);
     
-    %----------------------------------------------------------------------
-    % Task a: compute optical flow vectors 
-    %----------------------------------------------------------------------
-    
-    % calculate the smoothness and data part
     smoothness = uAvg .* Fx + vAvg .* vAvg + Ft;
     data = Fx .^2 + Fy .^2 + alpha;
     
-    % compute the iterations
-    u = uAvg - (smoothness .* Fx) ./ data;
-    v = vAvg - (smoothness .* Fy) ./ data;
     
-    % apply the median filter
-    filter = 7;
-    u = medfilt2(u, [filter filter]);
-    v = medfilt2(v, [filter filter]);
-    
+    %----------------------------------------------------------------------
+    % Task a: compute optical flow vectors 
+    %----------------------------------------------------------------------
+
 end
 
 %3. return result

@@ -36,6 +36,14 @@ function exercise2(input_directory, output_directory, file_extension)
         % call function get_opticalflow 
         % return parameter=get_opticalflow(parameters,...);
     
+        % TODO: delete; not sure what this does
+        fprintf('intermediate frame after %3d - %5.1f%%\n', j, j/(numel(file_list)-1)*100);
+        
+        img1 = rgb2gray(firstframe);
+        img2 = rgb2gray(secondframe);
+        alpha = 2500;
+        iterations = 10;
+        flow = get_opticalflow(img1, img2, alpha, iterations);
         
         %------------------------------------------------------------------
         % Task b+c: Generate new frame
