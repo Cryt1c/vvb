@@ -29,12 +29,15 @@ for i=1:iterations
     %----------------------------------------------------------------------
     
     % calculate the smoothness and data part
-    smoothness = uAvg .* Fx + vAvg .* vAvg + Ft;
-    data = Fx .^2 + Fy .^2 + alpha;
+    
+    % ich hab data und smoothness getauscht, das vorher umgekehrt. denk so
+    % muesst es passen oder?
+    data = uAvg .* Fx + vAvg .* vAvg + Ft;
+    smoothness = Fx .^2 + Fy .^2 + alpha;
     
     % compute the iterations
-    u = uAvg - (smoothness .* Fx) ./ data;
-    v = vAvg - (smoothness .* Fy) ./ data;
+    u = uAvg - (data .* Fx) ./ smoothness;
+    v = vAvg - (data .* Fy) ./ smoothness;
     
     % apply the median filter
     filter = 7;

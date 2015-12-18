@@ -37,6 +37,7 @@ function exercise2(input_directory, output_directory, file_extension)
         % return parameter=get_opticalflow(parameters,...);
     
         % TODO: delete; not sure what this does
+        % dann raus damit, nicht dass wir es vergessene
         fprintf('intermediate frame after %3d - %5.1f%%\n', j, j/(numel(file_list)-1)*100);
         
         img1 = rgb2gray(firstframe);
@@ -50,6 +51,8 @@ function exercise2(input_directory, output_directory, file_extension)
         %------------------------------------------------------------------
         % call function get_inbetween_image 
         % return parameter=get_inbetween_image(parameters,...);
+               
+        new_image = get_inbetween_image(firstframe, flow(:,:,1), flow(:,:,2));
 
         cnt=cnt+1; imwrite(firstframe,  getFileName(cnt,output_directory,file_extension));
         cnt=cnt+1; imwrite(uint8(new_image),  getFileName(cnt,output_directory,file_extension));
