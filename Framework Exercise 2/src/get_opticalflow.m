@@ -29,9 +29,6 @@ for i=1:iterations
     %----------------------------------------------------------------------
     
     % calculate the smoothness and data part
-    
-    % ich hab data und smoothness getauscht, das vorher umgekehrt. denk so
-    % muesst es passen oder?
     data = uAvg .* Fx + vAvg .* vAvg + Ft;
     smoothness = Fx .^2 + Fy .^2 + alpha;
     

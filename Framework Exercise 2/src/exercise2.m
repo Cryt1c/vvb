@@ -35,11 +35,8 @@ function exercise2(input_directory, output_directory, file_extension)
         %------------------------------------------------------------------
         % call function get_opticalflow 
         % return parameter=get_opticalflow(parameters,...);
-    
-        % TODO: delete; not sure what this does
-        % dann raus damit, nicht dass wir es vergessene
-        fprintf('intermediate frame after %3d - %5.1f%%\n', j, j/(numel(file_list)-1)*100);
-        
+            
+        % convert the images to greyscale and compute the flow vectors
         img1 = rgb2gray(firstframe);
         img2 = rgb2gray(secondframe);
         alpha = 2500;
