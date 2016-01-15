@@ -66,11 +66,18 @@ function exercise3(input_directory_fg,input_directory_bg, input_directory_fg_map
         % call function add_shadow 
         % return parameter=add_shadow(parameters,...);
         
+        xpos = 80;
+        ypos = 260;
+        
+        bg_shadow = add_shadow(xpos-60, ypos+60, bg, foreground_map);
+        
         %------------------------------------------------------------------
         % Task c: Merge foreground and background
         %------------------------------------------------------------------
         % call function merge 
         % return parameter=merge(parameters,...);
+        
+        result = merge(xpos, ypos, bg_shadow, fg, foreground_map);
        
         cnt=cnt+1; imwrite(result,  getFileName(cnt,output_directory,file_extension)); 
     end    
@@ -80,6 +87,8 @@ function exercise3(input_directory_fg,input_directory_bg, input_directory_fg_map
     %------------------------------------------------------------------
     % call function create_video 
     % create_video(parameters,...);
+    
+    create_video('../output/output.avi', output_directory,file_extension);
 end
 
 function sName = getFileName(cnt, output_directory,file_extension)
