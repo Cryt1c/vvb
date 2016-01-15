@@ -6,13 +6,12 @@ function create_video(video_filename, input_directory,file_extension)
     writer.FrameRate = 30;      %set framerate and open writer
     open(writer);
     
+    frames = dir([input_directory '/*.' file_extension]);   %load frame names
     
-    frame_list = dir([input_directory '/*.' file_extension]);   %load frame names
-    
-    for j = 1:numel(frame_list)
-        writeVideo(writer,imread([input_directory '/' frame_list(j).name])); % create video
+    for j = 1:numel(frames)
+        writeVideo(writer,imread([input_directory '/' frames(j).name])); % create video
     end
-    
+  
     close(writer);
 end
 
