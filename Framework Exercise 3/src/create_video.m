@@ -4,7 +4,7 @@ function create_video(video_filename, input_directory,file_extension)
     %---------------------------------------------------------------------
     writer = VideoWriter(video_filename);
     %set framerate and open writer
-    writer.FrameRate = 30;      
+    writer.FrameRate = 24;      
     open(writer);
     
     %load frame names
